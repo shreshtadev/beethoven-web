@@ -1,0 +1,46 @@
+@import 'tailwindcss';
+@plugin 'daisyui' {
+    themes: light --default, dark --prefersdark, forest;
+}
+html {
+    scroll-behavior: smooth;
+}
+
+* {
+    font-family: 'Open Sans', sans-serif;
+}
+
+h1,
+h2,
+h3,
+.poppins {
+    font-family: 'Poppins', sans-serif;
+}
+
+span {
+    font-family: inherit;
+    font-weight: inherit;
+}
+
+.bgGrid {
+    background-size: 40px 40px;
+    background-image: linear-gradient(to right, grey 1px, transparent 1px), linear-gradient(to bottom, grey 1px, transparent 1px);
+}
+
+.dropShadow {
+    filter: drop-shadow(-10.8923px 14.523px 35.0973px rgba(29, 140, 242, 0.2));
+}
+
+.fadeIn {
+    animation: fadeIn 300ms ease-in forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
