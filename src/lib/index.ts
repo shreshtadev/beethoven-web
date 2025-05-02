@@ -1,7 +1,6 @@
 // place files you want to import through the `$lib` alias in this folder.
 import PocketBase, { type RecordModel } from 'pocketbase';
-import { PUBLIC_BACKEND_URL_MPAYMENTS_SURVEY } from '$env/static/public';
-export const pb = new PocketBase(PUBLIC_BACKEND_URL_MPAYMENTS_SURVEY);
+export const pb = new PocketBase('http://3.109.250.92:8090');
 export const serializeNonPOJOs = (obj: any) => {
 	return JSON.parse(JSON.stringify(obj));
 };
