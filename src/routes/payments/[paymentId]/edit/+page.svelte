@@ -3,7 +3,7 @@
 	import { goto } from '$app/navigation';
 	import type { CreateUpdatePaymentRecord, PaymentRecord } from '$lib';
 
-	let { data } = $props();
+	let { data, form } = $props();
 	let pwid = data.foundPayment as PaymentRecord;
     let customers = data.customers;
 	const currentDate = () => {
@@ -26,7 +26,12 @@
 		paymentRefFile: pwid.paymentRefFile || undefined
 	});
 
-	async function handleUpdate() {
+	async function handleUpdate(e: SubmitEvent) {
+        e.preventDefault();
+        const submittedForm = await fetch('/payments/edit?/updatePayment', {
+            method: 'POST',
+            body: new FormData(e.target as HTMLFormElement)
+        });
 		await goto('/payments', { noScroll: true, invalidateAll: true, replaceState: true });
 	}
 
@@ -48,7 +53,6 @@
 				<div class="divider"></div>
 				<form
 					enctype="multipart/form-data"
-					action="?/updatePayment"
 					method="POST"
 					use:enhance
 					onsubmit={handleUpdate}

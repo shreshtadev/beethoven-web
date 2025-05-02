@@ -3,7 +3,7 @@
 	import { goto } from '$app/navigation';
 	import type { CreateUpdatePaymentRecord } from '$lib';
 	import { LucidePlusCircle } from '@lucide/svelte';
-	let { data } = $props();
+	let { data, form } = $props();
 	let profile = data.profile;
 	const customers = data.customers;
 	const currentDate = () => {
@@ -22,8 +22,14 @@
 		paidTo: '',
 		paymentRefFile: undefined
 	});
-	async function handleUpdate() {
-		await goto('/payments', { noScroll: true, invalidateAll: true, replaceState: true });
+	async function handleUpdate(e: SubmitEvent) {
+        const submittedForm = await fetch('/payments/create?/createPayment', {
+            method: 'POST',
+            body: new FormData(e.target as HTMLFormElement),
+        });
+		setTimeout(async () => {
+            await goto('/payments', { replaceState: true, invalidateAll: true });
+        }, 3000);
 	}
 
 	let filteredCustomers = $state(customers);
@@ -45,7 +51,6 @@
 				<form
 					onsubmit={handleUpdate}
 					enctype="multipart/form-data"
-					action="?/createPayment"
 					method="POST"
 					use:enhance
 				>

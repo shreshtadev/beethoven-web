@@ -23,7 +23,11 @@
 		panNo: ''
 	});
 
-	const handleSubmit = () => {
+	const handleSubmit = async () => {
+        const submittedForm = await fetch('/customers/create?/createCustomer', {
+            method: 'POST',
+            body: new FormData(form),
+        });
         setTimeout(async () => {
 		    await goto('/payments/create', { replaceState: true, invalidateAll: true });
         }, 3000);
@@ -38,7 +42,7 @@
 				Please fill out the contact form below.
 				<div class="divider"></div>
                 <ShAlert loading={isLoading} type={alertType} message={alertMessage} />
-				<form action="?/createCustomer" method="POST" use:enhance onsubmit={handleSubmit}>
+				<form  method="POST" use:enhance onsubmit={handleSubmit}>
 					<fieldset
 						class="fieldset border-base-300 rounded-box max-w-lg justify-between border p-4"
 					>

@@ -2,13 +2,24 @@
 	import { enhance } from '$app/forms';
 	import { FolderSync } from '@lucide/svelte';
 	import ShAlert from '../../../../components/ShAlert.svelte';
-	import type { ActionData, PageData, PageProps } from './$types';
+	import type { PageData } from './$types';
+	import { goto } from '$app/navigation';
 	const { data, form }: {data: PageData, form: any} = $props();
 	let isLoading = $derived(data.loading || form !== null);
 	let alertMessage: string | null = $derived(data.alert?.message || form?.message || null);
 	let alertType: 'success' | 'error' | 'info' | null = $derived(
 		data.alert?.type || form?.type || null
 	);
+
+    const handleUpload = async() => {
+        const submittedForm = await fetch('/files/s3/upload?/s3upload', {
+            method: 'POST',
+            body: new FormData(form),
+        });
+        setTimeout(async () => {
+            await goto('/files', { replaceState: true, invalidateAll: true });
+        }, 3000);
+    }
 </script>
 
 <div class="flex h-full w-full flex-col items-center pt-12">
@@ -24,7 +35,7 @@
 			use:enhance
 			enctype="multipart/form-data"
 			method="POST"
-			action="?/s3upload"
+            onsubmit={handleUpload}
 			class="flex w-full flex-col items-center space-y-2"
 		>
 			<div class="form-control w-full max-w-xs">
