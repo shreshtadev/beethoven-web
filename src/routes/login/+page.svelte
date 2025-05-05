@@ -15,16 +15,16 @@
 				method: 'POST',
 				body: loginFormData,
                 headers: {
-                    'Access-Control-Allow-Origin': 'http://13.232.178.86:3000',
-	                'Access-Control-Allow-Headers': 'Authorization,ContentType',
-                    'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE,OPTIONS,HEAD,PATCH',
                     'Accept': 'application/json',
                     'X-Requested-With': 'XMLHttpRequest'
                 },
                 credentials: 'include'
 			});
+            if (!loginResponse.ok) {
+                throw new Error('Login failed');
+            }
 			setTimeout(async () => {
-				await goto('/', { invalidateAll: true });
+				await goto('/');
 			}, 3000);
 		} catch (error) {
 			console.error('Login failed:', error);
