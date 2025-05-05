@@ -6,7 +6,6 @@
 		password: ''
 	});
 	const handleLogin = async (e: Event) => {
-        e.preventDefault();
 		const loginFormData = new FormData();
 		loginFormData.append('email', loginForm.email);
 		loginFormData.append('password', loginForm.password);
