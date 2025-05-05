@@ -13,10 +13,6 @@
 			const loginResponse = await fetch('/login', {
 				method: 'POST',
 				body: loginFormData,
-                headers: {
-                    'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest'
-                },
                 credentials: 'include'
 			});
             if (!loginResponse.ok) {
