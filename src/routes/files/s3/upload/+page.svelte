@@ -35,7 +35,6 @@
 			use:enhance
 			enctype="multipart/form-data"
 			method="POST"
-            onsubmit={handleUpload}
 			class="flex w-full flex-col items-center space-y-2"
 		>
 			<div class="form-control w-full max-w-xs">
@@ -52,7 +51,7 @@
 				{/if}
 			</div>
 			<div class="w-full max-w-xs pt-3">
-				<button class="btn btn-primary w-full max-w-xs">Upload File</button>
+				<button onclick={handleUpload} class="btn btn-primary w-full max-w-xs">Upload File</button>
 			</div>
 		</form>
 	</div>

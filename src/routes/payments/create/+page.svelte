@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { goto } from '$app/navigation';
+	import { goto, invalidateAll } from '$app/navigation';
 	import type { CreateUpdatePaymentRecord } from '$lib';
 	import { LucidePlusCircle } from '@lucide/svelte';
 	let { data, form } = $props();
@@ -22,13 +22,22 @@
 		paidTo: '',
 		paymentRefFile: undefined
 	});
-	async function handleUpdate(e: SubmitEvent) {
-        const submittedForm = await fetch('/payments/create?/createPayment', {
+	async function handleUpdate(e: Event) {
+        const createForm = new FormData();
+        Object.entries(formState).forEach(([key, value]) => {
+            if (value instanceof File) {
+                createForm.append(key, value, value.name);
+            } else {
+                createForm.append(key, value as string);
+            }
+        });
+        const submittedForm = await fetch('/payments/create', {
             method: 'POST',
-            body: new FormData(e.target as HTMLFormElement),
+            body: createForm,
         });
 		setTimeout(async () => {
-            await goto('/payments', { replaceState: true, invalidateAll: true });
+            await invalidateAll();
+            await goto('/payments', { replaceState: true });
         }, 3000);
 	}
 
@@ -49,7 +58,6 @@
 				Please fill in the payment information.
 				<div class="divider"></div>
 				<form
-					onsubmit={handleUpdate}
 					enctype="multipart/form-data"
 					method="POST"
 					use:enhance
@@ -208,7 +216,7 @@
 								/>
 							</div> -->
 						</div>
-						<button class="btn btn-neutral mt-4">Submit</button>
+						<button onclick={handleUpdate} class="btn btn-neutral mt-4">Submit</button>
 					</fieldset>
 				</form>
 			</div>

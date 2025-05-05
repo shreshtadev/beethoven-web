@@ -5,7 +5,7 @@
 
 	let { data, form } = $props();
 	let pwid = data.foundPayment as PaymentRecord;
-    let customers = data.customers;
+	let customers = data.customers;
 	const currentDate = () => {
 		const currDate = new Date();
 
@@ -27,15 +27,23 @@
 	});
 
 	async function handleUpdate(e: SubmitEvent) {
-        e.preventDefault();
-        const submittedForm = await fetch('/payments/edit?/updatePayment', {
-            method: 'POST',
-            body: new FormData(e.target as HTMLFormElement)
-        });
+		e.preventDefault();
+		const updateForm = new FormData();
+		Object.entries(formState).forEach(([key, value]) => {
+			if (value instanceof File) {
+				updateForm.append(key, value, value.name);
+			} else {
+				updateForm.append(key, value as string);
+			}
+		});
+		const submittedForm = await fetch('/payments/edit?/updatePayment', {
+			method: 'POST',
+			body: updateForm
+		});
 		await goto('/payments', { noScroll: true, invalidateAll: true, replaceState: true });
 	}
 
-    let filteredCustomers = $state(customers);
+	let filteredCustomers = $state(customers);
 
 	function filterCustomers(searchTerm: string) {
 		filteredCustomers = customers.filter((customer) =>
@@ -51,12 +59,7 @@
 			<div class="w-full py-6">
 				Please fill in the receipt information.
 				<div class="divider"></div>
-				<form
-					enctype="multipart/form-data"
-					method="POST"
-					use:enhance
-					onsubmit={handleUpdate}
-				>
+				<form enctype="multipart/form-data" method="POST" use:enhance onsubmit={handleUpdate}>
 					<fieldset
 						class="fieldset border-base-300 rounded-box max-w-lg justify-between border p-4"
 					>
@@ -76,26 +79,30 @@
 							{#if formState.paymentType === 'Receipt'}
 								<div>
 									<label for="receivedFrom" class="fieldset-label">Received From</label>
-                                    <input
-                                        type="text"
-                                        bind:value={formState.receivedFrom}
-                                        name="receivedFrom"
-                                        class="input w-full"
-                                        placeholder="Search or type received from"
-                                        list="customerList"
-                                        oninput={(e: any) => filterCustomers(e.target?.value)}
-                                        onblur={() => {
-                                            // Ensure the value matches an option in the list
-                                            if (!filteredCustomers.some(customer => customer.fullName === formState.receivedFrom)) {
-                                                formState.receivedFrom = '';
-                                            }
-                                        }}
-                                    />
-                                    <datalist id="customerList">
-                                        {#each filteredCustomers as customer}
-                                            <option value={customer.fullName}></option>
-                                        {/each}
-                                    </datalist>
+									<input
+										type="text"
+										bind:value={formState.receivedFrom}
+										name="receivedFrom"
+										class="input w-full"
+										placeholder="Search or type received from"
+										list="customerList"
+										oninput={(e: any) => filterCustomers(e.target?.value)}
+										onblur={() => {
+											// Ensure the value matches an option in the list
+											if (
+												!filteredCustomers.some(
+													(customer) => customer.fullName === formState.receivedFrom
+												)
+											) {
+												formState.receivedFrom = '';
+											}
+										}}
+									/>
+									<datalist id="customerList">
+										{#each filteredCustomers as customer}
+											<option value={customer.fullName}></option>
+										{/each}
+									</datalist>
 								</div>
 								<div>
 									<label for="receivedBy" class="fieldset-label">Received By</label>
@@ -108,30 +115,30 @@
 									/>
 								</div>
 							{/if}
-                            {#if formState.paymentType === 'Voucher'}
-							<div>
-								<label for="paidTo" class="fieldset-label">Paid To</label>
-								<input
-									type="text"
-									bind:value={formState.paidTo}
-									name="paidTo"
-									required={formState.paymentType === 'Voucher'}
-									class="input w-full"
-									placeholder="Paid To..."
-								/>
-							</div>
-                            <div>
-                                <label for="receivedBy" class="fieldset-label">Issued By</label>
-                                <input
-                                    type="text"
-                                    bind:value={formState.receivedBy}
-                                    name="receivedBy"
-                                    readonly
-                                    class="input w-full"
-                                    placeholder="Received By"
-                                />
-                            </div>
-                            {/if}
+							{#if formState.paymentType === 'Voucher'}
+								<div>
+									<label for="paidTo" class="fieldset-label">Paid To</label>
+									<input
+										type="text"
+										bind:value={formState.paidTo}
+										name="paidTo"
+										required={formState.paymentType === 'Voucher'}
+										class="input w-full"
+										placeholder="Paid To..."
+									/>
+								</div>
+								<div>
+									<label for="receivedBy" class="fieldset-label">Issued By</label>
+									<input
+										type="text"
+										bind:value={formState.receivedBy}
+										name="receivedBy"
+										readonly
+										class="input w-full"
+										placeholder="Received By"
+									/>
+								</div>
+							{/if}
 
 							<div>
 								<label for="paidOn" class="fieldset-label">Paid On</label>

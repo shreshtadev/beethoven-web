@@ -42,7 +42,7 @@
 				Please fill out the contact form below.
 				<div class="divider"></div>
                 <ShAlert loading={isLoading} type={alertType} message={alertMessage} />
-				<form  method="POST" use:enhance onsubmit={handleSubmit}>
+				<form>
 					<fieldset
 						class="fieldset border-base-300 rounded-box max-w-lg justify-between border p-4"
 					>
@@ -115,7 +115,7 @@
 							class="input w-full"
 							placeholder="Pan No"
 						/>
-						<button type="submit" class="btn btn-neutral mt-4">Submit</button>
+						<button onclick={handleSubmit} type="submit" class="btn btn-neutral mt-4">Submit</button>
 					</fieldset>
 				</form>
 			</div>
