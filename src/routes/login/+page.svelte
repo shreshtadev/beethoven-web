@@ -15,6 +15,9 @@
 				method: 'POST',
 				body: loginFormData,
                 headers: {
+                    'Access-Control-Allow-Origin': 'http://13.232.178.86:3000',
+	                'Access-Control-Allow-Headers': 'Authorization,ContentType',
+                    'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE,OPTIONS,HEAD,PATCH',
                     'Accept': 'application/json',
                     'X-Requested-With': 'XMLHttpRequest'
                 },
