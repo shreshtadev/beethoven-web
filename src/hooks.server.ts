@@ -14,7 +14,7 @@ export const handle: Handle = sequence(async ({ event, resolve }) => {
 		event.locals.isCompanyAdmin = undefined;
 	}
 	const response: Response = await resolve(event);
-	response.headers.append('Access-Control-Allow-Origin', 'http://13.232.178.86:3000');
+	response.headers.append('Access-Control-Allow-Origin', 'http://13.232.178.86:9080');
 	response.headers.append('Access-Control-Allow-Headers', 'Authorization,ContentType,Accept,X-Requested-With,Origin,Content-Type,X-Amz-Date,Signature,X-Amz-Security-Token,X-Amz-User-Agent');
     response.headers.append('Access-Control-Allow-Credentials', 'true');
 	response.headers.append('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS,HEAD,PATCH');
