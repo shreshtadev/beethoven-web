@@ -14,7 +14,7 @@ export const handle: Handle = async ({ event, resolve,  }) => {
         event.locals.isCompanyAdmin = undefined;
     }
 	const response: Response = await resolve(event);
-    response.headers.append('Access-Control-Allow-Origin', '*');
+    response.headers.append('Access-Control-Allow-Origin', 'http://13.232.178.86:3000,http://localhost:3000,http://127.0.0.1:3000');
     response.headers.append('Access-Control-Allow-Headers', 'Authorization,ContentType');
     response.headers.append('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS,HEAD,PATCH');
 	response.headers.set('set-cookie', event.locals.pb.authStore.exportToCookie({ secure: false, maxAge: 60*60*1 }));
